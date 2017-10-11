@@ -1,4 +1,4 @@
-#Importing data into the project
+# Importing data into the project
 
 fac <- read.csv(file="dataset/mfeat_fac.txt", header = T, sep = ";")
 fou <- read.csv(file="dataset/mfeat_fou.txt", header = T, sep = ";")
