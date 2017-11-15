@@ -1,48 +1,4 @@
-#Importing data into the project
-fac <- read.csv(file="mfeat_fac_tratado.txt", header = T, sep = ";")
-fou <- read.csv(file="mfeat_fou_tratado.txt", header = T, sep = ";")
-kar <- read.csv(file="mfeat_kar_tratado.txt", header = T, sep = ";")
-
-#class label
-rotulo <- read.csv(file="mfeat_fac_tratado.txt", header = T, sep = ";")[,218]
-
-#data without the class label
-fac <- fac[,1:216]
-fou <- fou[,1:76]
-kar <- kar[,1:64]
-
-#normalization
-range01 <- function(x){(x-min(x))/(max(x)-min(x))}
-
-fac <- range01(fac)
-fou <- range01(fou)
-kar <- range01(kar)
-
-normMatrizDissi <- function(matrizDissimilaridade, objetos = 2000  ) {
-  
-  s <- c()
-  
-  for (objs in seq(1:objetos)) {
-    
-    s <- c(s, sum( matrizDissimilaridade[,objs])  )
-    
-  }
-  
-  #calculo de T
-  
-  T <- sum(matrizDissimilaridade[order(s)[1],])
-  
-  return(T)
-  
-}
-
-m_fac <- as.matrix( dist(fac[,1:216], method = "euclidean"))
-m_fou <- as.matrix( dist(fou[,1:76], method =  "euclidean"))
-m_kar <- as.matrix( dist(kar[,1:64], method = "euclidean"))
-
-m_fac <- m_fac / normMatrizDissi(matrizDissimilaridade = m_fac)
-m_fou <- m_fou / normMatrizDissi(matrizDissimilaridade = m_fou)
-m_kar <- m_kar / normMatrizDissi(matrizDissimilaridade = m_kar)
+library(clues)
 
 #Initialization
 
@@ -72,6 +28,54 @@ E = 10^(-100)
 
 #interaction
 t <- 20
+
+
+#Importing data into the project
+fac <- read.csv(file="mfeat_fac_tratado.txt", header = T, sep = ";")
+fou <- read.csv(file="mfeat_fou_tratado.txt", header = T, sep = ";")
+kar <- read.csv(file="mfeat_kar_tratado.txt", header = T, sep = ";")
+
+#class label
+rotulo <- fac[,218]
+
+#data without the class label
+fac <- fac[,1:216]
+fou <- fou[,1:76]
+kar <- kar[,1:64]
+
+#normalization
+range01 <- function(x){(x-min(x))/(max(x)-min(x))}
+
+fac <- range01(fac)
+fou <- range01(fou)
+kar <- range01(kar)
+
+#
+normMatrizDissi <- function(matrizDissimilaridade, objetos = 2000  ) {
+  
+  s <- c()
+  
+  for (objs in seq(1:objetos)) {
+    
+    s <- c(s, sum( matrizDissimilaridade[,objs])  )
+    
+  }
+  
+  #calculo de T
+  
+  T <- sum(matrizDissimilaridade[order(s)[1],])
+  
+  return(T)
+  
+}
+
+m_fac <- as.matrix( dist(fac[,1:216], method = "euclidean"))
+m_fou <- as.matrix( dist(fou[,1:76], method =  "euclidean"))
+m_kar <- as.matrix( dist(kar[,1:64], method = "euclidean"))
+
+m_fac <- m_fac / normMatrizDissi(matrizDissimilaridade = m_fac)
+m_fou <- m_fou / normMatrizDissi(matrizDissimilaridade = m_fou)
+m_kar <- m_kar / normMatrizDissi(matrizDissimilaridade = m_kar)
 
 
 #Selecting randomly K different prototypes
