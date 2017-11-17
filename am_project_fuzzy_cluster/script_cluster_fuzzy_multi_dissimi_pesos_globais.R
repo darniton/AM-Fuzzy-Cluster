@@ -405,7 +405,7 @@ MFCMdd_RWG_P <- function(nrep, nint = t, numeroCluster = k, objetos = numeroObje
   }
   
   clusterHardMatriz <- matrix(clusterHard, ncol = 2, nrow =objetos, byrow = T )
-  rand <- adjustedRand(rotulo, clusterHardMatriz[,2])
+  rand <- adjustedRand(rotulo, clusterHardMatriz[,2])[2]
   
   return(list(L, G, U, J, clusterHardMatriz, rand))
   #return(list(L, G, U, J))
